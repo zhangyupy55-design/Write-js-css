@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS 旋转圆环加载动画</title>
+  <style>
+    .loading {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ccc;
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 核心：只需要一个空标签，加上类名 .loading 即可 -->
+  <div class="loading"></div>
+</body>
+</html>

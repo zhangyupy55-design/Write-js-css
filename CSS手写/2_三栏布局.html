@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    /* float 需要调换center和right的位置
+    .left {
+      float: left;
+      width: 200px;
+    }
+    .right {
+      float: right;
+      width: 200px;
+    }
+    .center {
+      padding: 0 200px;
+    } */
+
+    /* flex布局 */
+    /* .container {
+      display: flex;
+    }
+    .left, .right {
+      flex-basis: 200px;
+    }
+    .center {
+      flex: 1;
+    } */
+
+    /* grid布局 */
+    .container {
+      display: grid;
+      grid-template-columns: 200px 1fr 200px;
+    }
+  </style>
+
+</head>
+<body>
+  <div class="container" style="height: 150px;">
+    <div class="left" style="height: 150px; background-color: red;" >left</div>
+    <div class="center" style="height: 150px; background-color: blue;">center</div>
+    <div class="right" style="height: 150px; background-color: green;">right</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>条形加载动画</title>
+  <style>
+    /* 单个条形样式 */
+    .bar {
+      width: 4px;
+      height: 20px;
+      background: #333;
+      animation: stretch 1s infinite;
+    }
+
+    /* 定义高度伸缩动画 */
+    @keyframes stretch {
+      50% {
+        height: 40px;
+      }
+    }
+
+    /* 容器：让多个条形水平排列并居中 */
+    .bars-container {
+      display: flex;
+      gap: 4px; /* 条形之间的间距 */
+      align-items: center; /* 关键！让条形从底部向上伸缩 */
+      height: 100vh;
+      justify-content: center;
+    }
+
+    /* 给每个条形设置不同的动画延迟，实现波浪效果 */
+    .bar:nth-child(1) { animation-delay: -0.4s; }
+    .bar:nth-child(2) { animation-delay: -0.3s; }
+    .bar:nth-child(3) { animation-delay: -0.2s; }
+    .bar:nth-child(4) { animation-delay: -0.1s; }
+    .bar:nth-child(5) { animation-delay: 0s; }
+  </style>
+</head>
+<body>
+  <!-- 核心HTML：一个容器包裹5个条形 -->
+  <div class="bars-container">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</body>
+</html>
