@@ -59,6 +59,7 @@ function toTreeHash(list) {
       map[item.pid].children.push(node);
     } else {
       res.push(node); // 没有 pid 的就是根节点
+      //在res中存了对父对象node的引用，在修改node.children时，会直接修改res中的对象
     }
   }
 
