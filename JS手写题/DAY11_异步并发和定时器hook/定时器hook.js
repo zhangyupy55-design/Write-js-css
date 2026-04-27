@@ -44,3 +44,50 @@ export function useTimer(initialSeconds) {
     resetTimer
   }
 }
+
+//第二版
+import { ref, onUnmounted } from 'vue'
+
+export function TwouseTimer(initialSeconds) {
+  const seconds = ref(initialSeconds)
+  let intervalId = null
+
+  // 启动倒计时
+  function start() {
+    // 防止重复开定时器
+    if (intervalId) return
+
+    intervalId = setInterval(() => {
+      seconds.value--
+      // 到0就停
+      if (seconds.value <= 0) {
+        clearInterval(intervalId)
+        intervalId = null
+      }
+    }, 1000)
+  }
+
+  // 重置
+  const resetTimer = (newSeconds) => {
+    // 先停掉旧的
+    if (intervalId) {
+      clearInterval(intervalId)
+      intervalId = null
+    }
+    seconds.value = newSeconds
+    // 重新启动
+    start()
+  }
+
+  // 组件销毁时清定时器（防内存泄漏）
+  onUnmounted(() => {
+    if (intervalId) {
+      clearInterval(intervalId)
+    }
+  })
+
+  // 初始化启动
+  start()
+
+  return { seconds, resetTimer }
+}
