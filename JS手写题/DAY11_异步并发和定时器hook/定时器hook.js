@@ -1,37 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import { ref, watch } from 'vue'
 
-// 自定义定时器 Hook
-const useTimer = (initialSeconds) => {
-  // 使用 useState 来创建 seconds 状态变量，初始值为传入的 initialSeconds
-  const [seconds, setSeconds] = useState(initialSeconds);
+/**
+ * 自定义定时器组合式函数
+ * @param {number} initialSeconds 初始秒数
+ * @returns {Object} { seconds, resetTimer }
+ */
+export function useTimer(initialSeconds) {
+  // 对应 React useState：用 ref 定义响应式秒数
+  const seconds = ref(initialSeconds)
 
-  // 使用 useEffect 来处理定时器逻辑
-  useEffect(() => {
-    let intervalId; // 保存定时器的 ID
+  let intervalId = null
 
-    // 定义 tick 函数，每秒减少秒数
-    const tick = () => {
-      setSeconds((prevSeconds) => prevSeconds - 1);
-    };
+  // 对应 React 里的 tick 函数：每秒减 1
+  const tick = () => {
+    seconds.value -= 1
+  }
 
-    // 如果 seconds 大于 0，启动定时器
-    if (seconds > 0) {
-      intervalId = setInterval(tick, 1000);
-    }
+  // 对应 React useEffect + [seconds] 依赖监听
+  watch(
+    seconds,
+    (newVal) => {
+      // 先清除上一次的定时器（React return 清除函数的逻辑）
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
 
-    // 返回一个清除函数，在组件卸载或定时器重置时执行
-    return () => {
-      clearInterval(intervalId); // 清除定时器
-    };
-  }, [seconds]); // useEffect 依赖于 seconds 变量，只有在 seconds 变化时才会执行
+      // 秒数 > 0 才启动定时器
+      if (newVal > 0) {
+        intervalId = setInterval(tick, 1000)
+      }
+    },
+    { immediate: true } // 立刻执行一次，对应组件初始化启动定时器
+  )
 
-  // 定义 resetTimer 函数，用于重置定时器的秒数
+  // 重置定时器，对应 React 的 resetTimer
   const resetTimer = (newSeconds) => {
-    setSeconds(newSeconds);
-  };
+    seconds.value = newSeconds
+  }
 
-  // 返回当前秒数和重置定时器函数
-  return { seconds, resetTimer };
-};
-
-export default useTimer;
+  // 暴露出去给组件使用
+  return {
+    seconds,
+    resetTimer
+  }
+}
