@@ -33,7 +33,7 @@ console.log('=== 测试场景1：模拟搜索输入 ===');
 for (let i = 0; i < 5; i++) {
     setTimeout(() => {
         console.log(`输入第${i+1}次`);
-        debouncedTest(`搜索关键词 ${i+1}`);
+        debouncedTest(`搜索关键词 ${i+1}`); 
     }, i * 200);
 }
 

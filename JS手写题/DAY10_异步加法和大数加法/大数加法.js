@@ -10,8 +10,8 @@ const getBigInt = (a, b) => {
     let left = i >= 0 ? Number(a[i]) : 0;
     let right = j >= 0 ? Number(b[j]) : 0;
     let result = left + right + curry;
-    res.push(result % 10);
-    curry = Math.floor(result / 10);
+    res.push(result % 10);  // 取个位数
+    curry = Math.floor(result / 10); // 向下整数部分，作为下一次的进位
     i--;
     j--;
   }

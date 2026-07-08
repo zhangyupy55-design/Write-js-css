@@ -1,23 +1,38 @@
-function promiseAll(promises) {
+function myAll(promises) {
   return new Promise((resolve, reject) => {
     const res = []
-    let len = promises.length
-  	if(!len) resolve(res)
-    function fulfill(idx, val) {
-      res[idx] = val
-      len--
-      if(!len) {
-        resolve(res)
-      } 
-    }
+    let count = 0 // 记录成功完成的 promise 数量
+    const len = promises.length
 
-    promises.forEach((promise, idx) => {
-      Promise.resolve(promise).then((val) => fulfill(idx, val)).catch(e => reject(e))
+    // 边界：空数组直接 resolve
+    if (!len) resolve(res)
+
+    // 遍历所有异步任务
+    promises.forEach((p, index) => {
+      // 统一转成 Promise，防止数组里放普通数字/字符串
+      Promise.resolve(p)
+        .then((value) => {
+          // 按原数组下标存入结果，保证顺序不乱
+          res[index] = value
+          count++
+          // 全部都成功了，才把结果数组抛出去
+          if (count === len) {
+            resolve(res)
+          }
+        })
+        .catch((err) => {
+          // 任意一个失败，直接整体 reject，终止
+          reject(err)
+        })
     })
   })
 }
+
+
+
+
 //字节二面的手写promiseAll，要求考虑到接收可迭代对象进行转换，还延伸出来问把可迭代对象转成数组有什么方法，感觉可以更新一下文档
-function promiseAll(iterable) {
+function promiseAllbig(iterable) {
   // 核心：将 可迭代对象 转换为数组（
   const promises = Array.from(iterable);
   return new Promise((resolve, reject) => {
@@ -68,26 +83,22 @@ Promise.allSettled = function(promises) {
 
 const promises = [
   Promise.resolve('First'),
-  Promise.reject('Rejected'),
+  Promise.resolve('Rejected'),
   Promise.resolve('Third')
 ];
 
-Promise.all(promises)
+promiseAllmini(promises)
   .then(results => console.log(results))
   .catch(error => console.error(error));
 
-const promises = [
-  Promise.resolve('First'),
-  Promise.reject('Rejected'),
-  Promise.resolve('Third')
-];
 
-Promise.allSettled(promises)
-  .then(results => console.log(results))
-  .catch(error => console.error(error));
-// res
-[
-  { status: 'fulfilled', value: 'First' },
-  { status: 'rejected', reason: 'Rejected' },
-  { status: 'fulfilled', value: 'Third' }
-]
+
+// Promise.allSettled(promises)
+//   .then(results => console.log(results))
+//   .catch(error => console.error(error));
+// // res
+// [
+//   { status: 'fulfilled', value: 'First' },
+//   { status: 'rejected', reason: 'Rejected' },
+//   { status: 'fulfilled', value: 'Third' }
+// ]

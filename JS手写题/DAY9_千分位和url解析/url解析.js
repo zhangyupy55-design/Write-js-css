@@ -15,3 +15,6 @@ const parseUrl = (url) => {
   }
   return resObj
 }
+
+// 测试
+console.log(parseUrl("https://www.baidu.com?username=zs&password=123&username=ls"))

@@ -26,10 +26,17 @@ fetch(url, {
 .then(data => console.log(data))
 
 //axios请求
-axios.get(url)
-  .then(res => {
-    console.log(res.data) // 数据直接在 res.data 里
-  })
-  .catch(err => {
-    console.log('出错了', err)
-  })
+axios.get(url, {
+  //  这里加请求头（比如token、自定义头、Content-Type）
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer 你的token', // 常用：身份验证
+    'Custom-Header': '自定义参数'
+  }
+})
+.then(res => {
+  console.log(res.data)
+})
+.catch(err => {
+  console.log('出错了', err)
+})
